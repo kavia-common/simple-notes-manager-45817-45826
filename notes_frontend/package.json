@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "build": "slidev build",
-    "dev": "cross-env BROWSER=none SLIDEV_PORT=${VITE_PORT:-3000} slidev --remote --host 0.0.0.0 --port $SLIDEV_PORT --open false",
-    "dev:headless": "cross-env BROWSER=none SLIDEV_PORT=${VITE_PORT:-3000} slidev --remote --host 0.0.0.0 --port $SLIDEV_PORT --open false",
+    "dev": "cross-env BROWSER=none CHOKIDAR_USEPOLLING=1 slidev --remote",
+    "dev:headless": "cross-env BROWSER=none CHOKIDAR_USEPOLLING=1 slidev --remote",
     "start": "npm run dev",
     "export": "slidev export",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
-    "healthcheck": "node -e \"require('http').get('http://127.0.0.1:'+(Number(process.env.VITE_PORT||3000))+'/index.html',res=>{console.log(res.statusCode);process.exit(res.statusCode===200?0:1)}).on('error',()=>process.exit(1))\""
+    "healthcheck": "node -e \"const p=Number(process.env.VITE_PORT||3000);const path=(process.env.VITE_HEALTHCHECK_PATH||'/healthz');require('http').get(`http://127.0.0.1:${p}${path}`,res=>{console.log(res.statusCode);process.exit(res.statusCode===200?0:1)}).on('error',()=>process.exit(1))\""
   },
   "dependencies": {
     "@slidev/cli": "^51.4.0",

@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from 'vite'
+import { defineConfig, UserConfig, Plugin } from 'vite'
 
 /**
  * PUBLIC_INTERFACE
@@ -17,13 +17,47 @@ function getPort(): number {
 const PORT = getPort()
 
 /**
+ * Simple health endpoint for readiness checks in CI.
+ * Exposes GET /healthz -> 200 OK with text 'ok'.
+ */
+function healthPlugin(): Plugin {
+  return {
+    name: 'health-endpoint',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === (process.env.VITE_HEALTHCHECK_PATH || '/healthz')) {
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'text/plain')
+          res.end('ok')
+          return
+        }
+        next()
+      })
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === (process.env.VITE_HEALTHCHECK_PATH || '/healthz')) {
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'text/plain')
+          res.end('ok')
+          return
+        }
+        next()
+      })
+    },
+  }
+}
+
+/**
  * PUBLIC_INTERFACE
  * Vite configuration for both dev and preview servers.
  * - host: true binds to 0.0.0.0
  * - port: taken from env via getPort()
  * - strictPort: true ensures we fail if port is occupied (useful in CI)
+ * - watch polling enabled for CI/headless environments
  */
 export default defineConfig({
+  plugins: [healthPlugin()],
   server: {
     host: true, // 0.0.0.0
     port: PORT,

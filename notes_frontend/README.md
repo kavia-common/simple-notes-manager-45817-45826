@@ -10,6 +10,12 @@ Headless/CI environments:
 - Use `pnpm dev:headless` which sets `BROWSER=none` explicitly and disables any auto-open behavior.
 - You can override the port with `VITE_PORT=3000 pnpm dev:headless`
 - Server always binds to 0.0.0.0 for preview compatibility
+- Health endpoint available at `/healthz` (or set VITE_HEALTHCHECK_PATH) for readiness checks.
+
+Port/Host single source of truth:
+- host/port/strictPort are defined only in `vite.config.ts` (host=true (0.0.0.0), port=VITE_PORT||3000, strictPort=true).
+- package.json scripts do not pass --port/--host/--open flags; they rely on Vite/Slidev config.
+- Chokidar polling is enabled by default for CI stability.
 
 Open the "Notes App" slide from the left navigator or navigate slides until you reach "Notes App".
 Notes persist in your browser localStorage.
