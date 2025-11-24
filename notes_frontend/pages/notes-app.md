@@ -19,7 +19,7 @@ function getFeatureFlags(): Record<string, any> {
     const raw = import.meta?.env?.VITE_FEATURE_FLAGS
     if (!raw) return {}
     if (typeof raw === 'string') {
-      return JSON.parse(raw)
+      try { return JSON.parse(raw) } catch { return {} }
     }
     return raw || {}
   } catch {

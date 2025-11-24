@@ -1,5 +1,5 @@
 ---
-# Global deck settings
+# Global deck settings (Slidev entry file)
 theme: default
 title: Your Presentation Title
 info: |
