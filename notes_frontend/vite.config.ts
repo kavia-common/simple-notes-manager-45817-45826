@@ -3,12 +3,11 @@ import { defineConfig, UserConfig, Plugin } from 'vite'
 /**
  * PUBLIC_INTERFACE
  * getPort resolves the dev server port from environment variables with a safe default.
- * Honors VITE_PORT or PORT, falling back to 3000.
+ * Honors VITE_PORT, falling back to 3000. We do NOT read PORT to avoid conflicts from hosts.
  * Always returns a single number (never an array) to avoid Vite/Slidev option parsing errors.
  */
 function getPort(): number {
-  // Some CI inject arrays like "3000,3001" - normalize to first number
-  const rawEnv = process.env.VITE_PORT || process.env.PORT || '3000'
+  const rawEnv = process.env.VITE_PORT || '3000'
   const raw = Array.isArray(rawEnv) ? rawEnv[0] : String(rawEnv).split(',')[0]
   const parsed = Number(raw)
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 3000
@@ -52,9 +51,9 @@ function healthPlugin(): Plugin {
  * PUBLIC_INTERFACE
  * Vite configuration for both dev and preview servers.
  * - host: true binds to 0.0.0.0
- * - port: taken from env via getPort()
+ * - port: Number(process.env.VITE_PORT || 3000)
  * - strictPort: true ensures we fail if port is occupied (useful in CI)
- * - watch polling enabled for CI/headless environments
+ * - watch polling enabled for CI/headless environments (CHOKIDAR_USEPOLLING=1 behavior)
  */
 export default defineConfig({
   plugins: [healthPlugin()],
