@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "slidev build",
-    "dev": "CHOKIDAR_USEPOLLING=1 slidev --remote",
-    "dev:headless": "CHOKIDAR_USEPOLLING=1 slidev --remote",
+    "dev": "slidev --remote",
+    "dev:headless": "slidev --remote",
     "start": "npm run dev",
     "export": "slidev export",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
