@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "slidev build",
-    "dev": "slidev --remote --force",
-    "start": "slidev --remote --force",
+    "dev": "slidev --remote",
+    "start": "npm run dev",
     "export": "slidev export",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
