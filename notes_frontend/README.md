@@ -4,10 +4,12 @@ To start the slide show / Notes App:
 
 - `pnpm install`
 - `pnpm dev` (binds to 0.0.0.0 and does not auto-open a browser)
-- visit <http://localhost:3000>
+- visit <http://localhost:3000> (or your VITE_PORT)
 
 Headless/CI environments:
 - Use `pnpm dev:headless` which sets `BROWSER=none` explicitly and disables any auto-open behavior.
+- You can override the port with `VITE_PORT=3000 pnpm dev:headless`
+- Server always binds to 0.0.0.0 for preview compatibility
 
 Open the "Notes App" slide from the left navigator or navigate slides until you reach "Notes App".
 Notes persist in your browser localStorage.

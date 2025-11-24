@@ -7,7 +7,9 @@ import { defineConfig, UserConfig } from 'vite'
  * Always returns a single number (never an array) to avoid Vite/Slidev option parsing errors.
  */
 function getPort(): number {
-  const raw = process.env.VITE_PORT || process.env.PORT || '3000'
+  // Some CI inject arrays like "3000,3001" - normalize to first number
+  const rawEnv = process.env.VITE_PORT || process.env.PORT || '3000'
+  const raw = Array.isArray(rawEnv) ? rawEnv[0] : String(rawEnv).split(',')[0]
   const parsed = Number(raw)
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 3000
 }
@@ -23,7 +25,7 @@ const PORT = getPort()
  */
 export default defineConfig({
   server: {
-    host: true, // equivalent to '0.0.0.0' and cross-platform
+    host: true, // 0.0.0.0
     port: PORT,
     strictPort: true,
     headers: {
@@ -33,10 +35,12 @@ export default defineConfig({
       usePolling: true,
       interval: 100,
     },
+    open: false,
   },
   preview: {
     host: true,
     port: PORT,
     strictPort: true,
+    open: false,
   },
 } as UserConfig)
