@@ -30,6 +30,11 @@ css: |
 
 ---
 
+# Notes App
+src: ./pages/notes-app.md
+
+---
+
 # The Challenge
 
 <div class="problem-grid">
